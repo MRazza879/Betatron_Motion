@@ -112,11 +112,12 @@ char filename2 [50];
 			}
 
 			fprintf(lyap, "%lf\t%lf\t%lf\n", x0, y0, log10(log10(calculateLE(eta1x, eta1px, eta1y, eta1py, eta2x, eta2px, eta2y, eta2py, eta3x, eta3px, eta3y, eta3py, eta4x, eta4px, eta4y, eta4py))));
-			printf("%d\t%d\n", i, j);
+			printf("Processing lattice positions: x0=%d\t y0=%d\n", i, j);
 			
 		}
 	}
 //Closing the files
+	printf("Processing terminated successfully");
 	fclose(lyap);
 	fclose(REM);
 	
