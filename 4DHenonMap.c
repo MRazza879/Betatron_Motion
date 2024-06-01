@@ -117,7 +117,7 @@ char filename2 [50];
 		}
 	}
 //Closing the files
-	printf("Processing terminated successfully");
+	printf("Processing terminated successfully\n");
 	fclose(lyap);
 	fclose(REM);
 	
