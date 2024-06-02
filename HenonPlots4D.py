@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #Author: Marta Razza
 #This script reads the files containing the values of the dynamical indicator: Lyapunov error(LE) and Reversibility error method (REM) and plots them.
-
+#This script also plots stability time.
+#It allows to compute the number of stable samples for each dynamical indicator and for stability time.
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -35,6 +36,10 @@ def main():
     process_indicators(lyapunov_file, "Lyapunov_error_4D_Hénon_map")
     process_indicators(reversibility_file, "Reversibility_error_method_4D_Hénon_map")
     process_indicators(stability_time_file, "Stability_time")
+    
+    stablesamples(lyapunov_file, "Lyapunov_error_4D_Hénon_map")
+    stablesamples(reversibility_file, "Reversibility_error_method_4D_Hénon_map")
+    stablesamples_forST(stability_time_file, "Stability_time_4D_Hénon_map")
 
 # Class to plot the dynamical indicators
 class Indicators:
@@ -76,6 +81,23 @@ def process_indicators(filename, title):
     indicators = Indicators(filename, title)
     indicators.plot()
     indicators.save_plot(f'{title}.png')
+    
+# Function to count the number of values different from nan or inf considering the third column of the file
+def stablesamples(filename, title):
+    data = reading_file(filename)
+    data = data.iloc[:, 2]
+    data = data.replace([np.inf, -np.inf], np.nan)
+    data = data.dropna()
+    print(f"Number of stable samples for {title}: {len(data)}")
+    
+#The case of stability time is different from the previous ones. 
+#Here the stable samples are the ones with the maximum value of the stability time meaning that they have not exceeded the threshold radius r_c.
+def stablesamples_forST(filename, title):
+    data = reading_file(filename)
+    data = data.iloc[:, 2]
+    max_value = data.max()
+    data = data[data == max_value]
+    print(f"Number of stable samples for {title}: {len(data)}")
 
     
 
