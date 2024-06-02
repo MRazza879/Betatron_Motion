@@ -24,15 +24,17 @@ def reading_file(filename):
 
 def main():
     # Verifying the number of arguments
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 4:
         print("Please provide the name of 2 different files to be read. The order is: lyapunov and reversibility.")
         return
 
     lyapunov_file = sys.argv[1]
     reversibility_file = sys.argv[2]
+    stability_time_file = sys.argv[3]
 
     process_indicators(lyapunov_file, "Lyapunov_error_4D_Hénon_map")
     process_indicators(reversibility_file, "Reversibility_error_method_4D_Hénon_map")
+    process_indicators(stability_time_file, "Stability_time")
 
 # Class to plot the dynamical indicators
 class Indicators:
@@ -74,6 +76,7 @@ def process_indicators(filename, title):
     indicators = Indicators(filename, title)
     indicators.plot()
     indicators.save_plot(f'{title}.png')
+
     
 
 if __name__ == "__main__":
