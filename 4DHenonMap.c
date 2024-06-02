@@ -47,7 +47,7 @@ char filename2 [50];
 //Checking the number of arguments
 	if (argc != 7)
 	{
-		printf("Usage: %s nu_x nu_y eps N_steps lattice length N_turns\n", argv[0]);
+		printf("Usage: %s nu_x nu_y eps N_steps lattice_length N_turns\n", argv[0]);
 		exit(1);
 	}
 //Defining the variables
