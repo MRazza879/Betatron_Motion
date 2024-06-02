@@ -39,12 +39,12 @@ class Indicators:
     def __init__(self, filename, title):
         self.filename = filename
         self.data = reading_file(filename)
-        self.data.columns = ['x0', 'p0', 'indicator']
+        self.data.columns = ['x0', 'y0', 'indicator']
         self.title = title
 
     def plot(self):
         x = np.array(self.data['x0'])
-        p = np.array(self.data['p0'])
+        y = np.array(self.data['y0'])
         indicator = np.array(self.data['indicator'])
 
         # Creation of the figure with higher resolution
@@ -54,15 +54,15 @@ class Indicators:
         cmap = plt.colormaps['viridis']
 
         # Creation of the color map with smaller markers
-        sc = ax.scatter(x, p, c=indicator, cmap=cmap, marker='s', s=1)
+        sc = ax.scatter(x, y, c=indicator, cmap=cmap, marker='s', s=1)
 
         # Adding the color bar
         cbar = plt.colorbar(sc)
 
         # Graph settings
         ax.set_title(self.title)
-        ax.set_xlabel("x")
-        ax.set_ylabel("p")
+        ax.set_xlabel("x0")
+        ax.set_ylabel("y0")
         #if you want to change the dimension of lattice remember to change these values below
         ax.set_xlim([0, 0.45])
         ax.set_ylim([0, 0.45])
