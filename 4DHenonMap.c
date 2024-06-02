@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h> 
 
 
 //Defining the functions
@@ -22,6 +23,11 @@ double calculateLE(double eta1x, double eta1px, double eta1y, double eta1py, dou
 
 int main(int argc, char *argv[])
 {
+
+//Start measuring time
+	clock_t start_time, end_time;
+	start_time = clock();
+
 //Opening the files
 char filename [50];
 	sprintf(filename, "lyapunov_nux%s_nuy%s_eps%s_n%s.txt", argv[1], argv[2],argv[3], argv[6]);
@@ -120,6 +126,13 @@ char filename2 [50];
 	printf("Processing terminated successfully\n");
 	fclose(lyap);
 	fclose(REM);
+
+//End measuring time
+	end_time = clock();
+	double time_spent = (double)(end_time-start_time)/CLOCKS_PER_SEC;
+	printf("Time taken to run the program: %f seconds\n", time_spent);
+
+	return 0;
 	
 }
 //function to compute the 4D Henon map
