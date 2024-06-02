@@ -41,7 +41,7 @@ def main():
     stablesamples(reversibility_file, "Reversibility_error_method_4D_Hénon_map")
     stablesamples_forST(stability_time_file, "Stability_time_4D_Hénon_map")
 
-# Class to plot the dynamical indicators
+# Class to plot the dynamical indicators and stability time
 class Indicators:
     def __init__(self, filename, title):
         self.filename = filename
