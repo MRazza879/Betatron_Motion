@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h> 
+
 
 // Function prototypes
 void henon(double *x, double *p_x, double *y, double *p_y, double nu_x, double nu_y, int i, double eps);
@@ -14,6 +16,11 @@ double stabilityTime(double x0, double y0, double nu_x, double nu_y, double eps,
 
 int main(int argc, char *argv[])
 {
+    //Start measuring time
+    clock_t start_time, end_time;
+    start_time = clock();
+
+
     // Check if the correct number of arguments is provided
     if (argc != 7)
     {
@@ -58,6 +65,12 @@ int main(int argc, char *argv[])
     }
 	printf("Stability time calculation completed\n");
     fclose(stabtime);
+//End measuring time
+    end_time = clock();
+    double time_spent = (double)(end_time-start_time)/CLOCKS_PER_SEC;
+    printf("Time taken to run the program: %f seconds\n", time_spent);
+
+    return 0;
 }
 
 // Henon map function
