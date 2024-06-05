@@ -2,7 +2,28 @@
 # Betatron Motion for Software and Computing for Nuclear and Subnuclear Physics exam
 This repository contains two main codes developed in C and other python scripts to extract plots and further analysis. **If you need more details about the theoretical background of this project, please read the report in the repository**.
 ## Requirements
-
+To use my codes is very simple. You just need a C-compiler such as `gcc` and a python3 version with the following libreries: matplotlyb, sys, numpy and pandas. 
+To install gcc, if you are using Linux, use:
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+If, instead, you are using macOS:
+```bash
+brew install gcc
+```
+To check if the installation works fine, run:
+```bash
+gcc --version
+```
+To download python3 visit the website https://www.python.org/download/releases/3.0/ and then you can check the version from terminal, doing:
+```bash
+python3 --version
+```
+If you do not have the libreries (sys is already included), you can just execute the following command line:
+```bash
+pip3 install matplotlib numpy pandas
+```
 ## Introduction
 The study of orbital stability is a major problem not only, as one could expect, in celestial mechanics, but also in accelerator physics. When a particle runs over the beam pipe for billions of times, it can happen that the evolution of its coordinates leads to a loss of the particle itself, reducing, as a consequence, the luminosity i.e. the amount of data recorded.  
 It should be clear that an accurate model of dynamic aperture, the stability region of phase-space in a circular accelerator, becomes extremely important for the design of a collider. Indeed this is the era in which we need a large amount of data to search for beyond the standard model physics. The Hénon Map is largely used as a simple model to describe the behaviour of a particle passing through a FODO cell with the addition of a sextupole magnet (needed to reduce the chromaticity spread and to correct feed-down effects given by dipole and quadrupole magnets).  It is important to mention that the Hénon Map is just a model, realistic simulations to describe real colliders are necessary. Nevertheless the Hénon Map is still important, as a tool, to test the performance and accuracy of dynamical indicators.  
@@ -10,7 +31,7 @@ Generally these kind of simulations are very long lasting, so the dynamical indi
 The first one takes into account the different evolution of two near-by initial conditions, i.e. the sensitivity to a small variation of them, which is the basic way to investigate chaotic behaviour. Indeed it is usually considered as a ground truth for the definition of chaoticity. The second one is based on the evolution of the initial conditions  in the phase-space through Hénon Map and then the successive application of the inverse map in order to come back to the original coordinates. The finite precision of computers do not allow to evolve back exactly to the initial points, but the precision is taken as 10^-16 according to the IEEE754 international standard for real numbers.
 
 ## Description of the 2D Hénon map
-The first one, `2DHenonMap.c`, calculates the 2D Hénon map, which is a symplectic map generally used in accelerator physics to model the transverse motion of a particle in a circular accelerator.  
+The first code, `2DHenonMap.c`, studies the evolution of a particle in a circular accelerator according to the Hénon map model in the two-dimensional case (Coordinates are given by space and momentum). 
 The aim is to study the orbital stability of a particle and distinguish between initial conditions that lead to chaos and ones that remain stable after the total number of turns.
 To compile the code, use the following command:
 ```bash
@@ -26,13 +47,13 @@ For example you may use:
 ```
 The command line parameters represent: "**tune modulation N_steps N_iterations**".   
 
-- '**Tune**': (nu in the code) Represents the oscillation frequency in the transverse plane. Its definition is: Q= 2π/ω. The number of islands that you can obseve in the phase-space portrait depends on its value.  
+- '**Tune**': (nu in the code) Represents the oscillation frequency in the transverse plane. Its definition is: Q= 2π/ω. The number of islands that you can observe in the phase-space portrait depends on its value.  
   Examples are shown with: Q= 0.21 and Q= 0.254 because the first one is close to 1/5 and the second one is close to 1/4.   Indeed performing simulations you will obtain respectively 5 and 4 islands. These islands are stability regions, meaning that a particle with a set of initial conditions inside them will not become chaotic.
-- '**Modulation**': (eps in the code) Takes into account the coupling between betatron and synchrotron motion and power supply ripples.
+- '**Modulation**': (eps in the code) Takes into account the coupling between betatron and synchrotron motion and power supply ripples (the parameters inside the code refer to SPS at CERN).
 - '**N_steps**': The number of steps to explore the lattice of initial conditions built in the code (suggested value: 200 to obtain my results, in this way the code will do 400 steps from -200 to 200, resulting in a 400x400 lattice). **In this code the lattice goes from -1 to +1 whatever value you choose for N_steps**, the higher N_steps the more precise the lattice will be. 
 - '**N_iterations**': The number of map iterations to compute the dynamical indicator Lyapunov Error (suggested value: 200).
-  Furthermore the code performs the tracking (1000 turns) for a small number of initial conditions to extract the phase-space portrait.  
-  From this code you obtain two **.txt** files, one containing the tracking and the other one the value of Lyapunov error. The first file is divided into two columns that represent the evolution of the initial conditions. The second file is divided into three columns, the first two represent the initial conditions on x and p while the third one is the computed value for the Lyapunov error. **To save CPU you can use the data I extracted from this simulation that you find in the repository "2DHénonMap_data_plots"**
+  Furthermore the code performs the tracking (fixed to 1000 turns) for a small number of initial conditions to extract the phase-space portrait.  
+  From this code you obtain two "**.txt** files", one containing the tracking and the other one the value of Lyapunov error. The first file is divided into two columns that represent the evolution of the initial conditions. The second file is divided into three columns, the first two represent the initial conditions on x and p while the third one is the computed value for the Lyapunov error. **To save CPU you can use the data I extracted from this simulation that you find in the repository "2DHénonMap_data_plots"**
   
 In particular you can reproduce the plots shown below using the python script `HenonPlots2D.py` that can be executed using:
 ```bash
@@ -58,7 +79,7 @@ These two plots were obtained using: tracking_nu0.254_eps64.txt, lyapunov_error2
 
 ## Description of the 4D Hénon map
 The second part of this project is based on `4DHenonMap.c` and `stabilitytime.c`. The first code represents an extension of the Hénon Map to the 4-dimensional case: x, px, y, py. Here you don't find the tracking, but another dynamical indicator named Reversibility Error Method (REM). The REM is different from the Lyapunov error already from its definition (see report) and a comparison between them is made at the end of this project.  
-The second code allows to compute the stability time.   Indeed one, in principle, is interested into knowing the fate of a particle with given initial conditions in the phase-space after a large number of turns. This is a major problem to assess to design properly the beam pipe, in fact oscillations and non-linearities in the transverse plane can lead to a growth in the space coordinates that overcome the width of the pipe. One may think to follow the particle through its journey up to a very large number of turns, for each possible initial condition.   This is a rather long process, for this reason dynamical indicators, borrowed from celestial mechanics, have been implemented to provide an efficient way to study orbital stability.  The stability time which is based on the fact that, given an initial condition, when the number of iterations is n = nmax, if its distance from the origin is smaller than a control parameter r_c, we can consider it as stable. If, instead, the condition is not satisfied we can consider the initial condition as lost and its tracking is stopped.   For the simulation it was used r_c = 10^2, but the dependence of the results on the chosen value for r_c is so small that it can be neglected.  
+The second code allows to compute the stability time.   Indeed one, in principle, is interested into knowing the fate of a particle with given initial conditions in the phase-space after a large number of turns. This is a major problem to assess to design properly the beam pipe, in fact oscillations and non-linearities in the transverse plane can lead to a growth in the space coordinates that overcome the width of the pipe, as deeply explained at the beginning. One may think to follow the particle through its journey up to a very large number of turns, for each possible initial condition.   This is a rather long process, for this reason dynamical indicators have been implemented to provide an efficient way to study orbital stability.  The stability time, based on the fact that, given an initial condition evolved n = nmax times, if its distance from the origin is smaller than a control parameter r_c, we can consider it as stable. If, instead, the condition is not satisfied we can consider the initial condition as lost and its tracking is stopped.   For the simulation it was used r_c = 10^2, but the dependence of the results on the chosen value for r_c is so small that it can be neglected.  
 To compile the first code, you have to use:
 ```bash
 gcc 4DHenonMap.c -o 4dmap
