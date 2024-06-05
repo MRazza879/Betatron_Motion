@@ -86,7 +86,7 @@ and you will obtain:
 With `HenonPlots4D.py` it is possible to compute the number of stable samples for LE, REM and stability time.   The case of stability time is different from the other two cases because the stable samples correspond to the maximum value of the stability time meaning that orbits have not exceeded the threshold radius r_c. For a number of iterations equal to 10^6, I have obtained 56044 stable samples. Indicators instead provide the number of stable samples eliminating the values equal to nan or ±∞ due to numerical saturation.    
 Below the result of the analysis:
 
-<img src="Stablesamples.png" alt="Example Plot" width="70%"/>
+<img src=".png" alt="Example Plot" width="70%"/>
 
 Varying the number of iterations shown in the x-axis, the number of stable samples obtained for LE and REM are shown. Already at 10^4 iterations there is a good agreement with the stability time case at 10^6. The number of stable samples was normalized to the one obtained with the stability time. The duration of running with the indicators is extremely lower. Stable samples(LE) = 56643 and Stable samples(REM) = 56668.  
 
